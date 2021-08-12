@@ -1,9 +1,28 @@
+import { useEffect, useRef, useState } from 'react';
 import './App.scss';
 
 function App() {
+  const [isActive, setIsActive] = useState(false);
+  const ref = useRef();
+  const height = 748;
+
+  useEffect(() => {
+    window.addEventListener('scroll', fixNav);
+
+    return () => window.removeEventListener('scroll', fixNav);
+  }, []);
+
+  const fixNav = () => {
+    if (window.scrollY > ref.current.offsetHeight + height) {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  };
+
   return (
     <>
-      <nav className="nav">
+      <nav ref={ref} className={`nav ${isActive ? 'active' : ''}`}>
         <div className="container">
           <h1 className="logo">
             <a href="/index.html">My Website</a>
